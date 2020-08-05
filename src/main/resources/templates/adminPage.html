@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>AdminPage</title>
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+<body class="bg-light">
+<div class="container-fluid">
+    <!-- Это начало верхней строки-->
+    <div class="row  navbar-header bg-dark text-white">
+        <div class="col-lg-11 navbar-brand" id="headPage">
+            <b >admin@mail.ru</b> with roles:
+                        <b>Default</b>
+        </div>
+        <div class="col-lg">
+            <div class="navbar-brand">
+                <a href="/logout"><small>Logout</small></a>
+            </div>
+        </div>
+    </div>
+    <!-- Это конец верхней строки и начало тела сайта-->
+    <div class="row">
+       <!--Это боковая панель меню сайта-->
+      <div class="col-lg-2 bg-white">
+        <ul class="row nav flex-column nav-pills pt-3" role="tablist">
+            <li class="nav-item"><a class="nav-link active" href="#admin" role="tab" data-toggle="tab">Admin</a></li>
+            <li class="nav-item"><a class="nav-link" href="#user" role="tab" data-toggle="tab">User</a></li>
+        </ul>
+      </div>
+      <!--Конец боковой пали сайта-->
+      <!--Контейнер основной страницы-->
+      <div class="col-lg-10 pt-3 pl-4">
+          <div class="tab-content">
+          <!--Начало админовской вкладки-->
+         <div role="tabpanel" class="tab-pane active" id="admin">
+          <h2>Admin panel</h2>
+          <!--Навигационная панель основной страницы-->
+          <ul class="row nav nav-tabs mt-1 ml-1">
+              <li class="nav-item"><a id="linkUsersTable" class="nav-link active" href="#usersTable" data-toggle="tab">Users table</a></li>
+              <li class="nav-item"><a id="linkNewUser" class="nav-link" href="#newUser" data-toggle="tab">New User</a></li>
+          </ul>
+          <!--Тело отображения таблицы и добавления юзера-->
+          <div class="tab-content">
+              <!--Отображение таблицы юзеров-->
+              <div role="tabpanel" class="tab-pane active" id="usersTable">
+                  <div class="row border ml-1">
+                     <h5 class="p-2 pl-3">All users</h5>
+                  </div>
+                  <div class="row bg-white border ml-1">
+                     <table class="table table-striped m-3" id="TableForAllUser">
+                       <thead>
+                         <tr>
+                             <th scope="col">Id</th>
+                             <th scope="col">First Name</th>
+                             <th scope="col">Last Name</th>
+                             <th scope="col">Age</th>
+                             <th scope="col">Email</th>
+                             <th scope="col">Role</th>
+                             <th scope="col">Edit</th>
+                             <th scope="col">Delete</th>
+                         </tr>
+                       </thead>
+                       <tbody id="rowInTable">
+
+                       </tbody>
+                     </table>
+
+                             <!-- Create modal for Edit User-->
+                             <div id="editModal" class="modal fade">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                             <h4 class="modal-title">Edit User</h4>
+                                             <button class="close" data-dismiss="modal">x</button>
+                                         </div>
+                                         <div class="modal-body">
+                                             <form action="/admin/edit"  method="POST" id="formForEditUser">
+                                                 <div class="container col-lg-6">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0" >ID</b></div>
+                                                     <input type="number" name="id" readonly class="form-control pt-o mt-0" style="height: 1.5em" id="idUserEdit">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0">First name</b></div>
+                                                     <input type="text" name="firstName" class="form-control" style="height: 1.5em" id="firstNameUserEdit">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0">Last name</b></div>
+                                                     <input type="text" name="lastName" class="form-control" style="height: 1.5em" id="lastNameUserEdit">
+                                                     <div class=" text-center"><b class="mb-0 pb-0">Age</b></div>
+                                                     <input type="number" name="age" class="form-control"  style="height: 1.5em" id="ageUserEdit">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0" >Email</b></div>
+                                                     <input type="text" name="email" class="form-control" aria-describedby="emailHelp" style="height: 1.5em" id="emailUserEdit">
+                                                     <div class=" text-center"><b class="mb-0 pb-0">Role</b></div>
+                                                     <select id="rolesEdit" name="role" multiple class="form-control" style="height: 2.5em">
+                                                     </select>
+                                                 </div>
+                                                 <div class="text-right">
+                                                     <button class="btn btn-secondary mt-4" data-dismiss="modal" id="closeEdit">Close</button>
+                                                     <input type="submit" class="btn btn-success mt-4"  value="Edit">
+                                                 </div>
+                                             </form>
+                                         </div>
+
+                                     </div>
+                                 </div>
+                             </div>
+                             <!--End modal for edit user-->
+                             <!--Create modal for delete user-->
+                             <div id="deleteModal" class="modal fade">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                             <h4 class="modal-title">Delete User</h4>
+                                             <button class="close" data-dismiss="modal">x</button>
+                                         </div>
+                                         <div class="modal-body">
+                                             <form action="/admin/delete" method="POST" id="formForDeleteUser">
+                                                 <div class="container col-lg-6">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0" >First name</b></div>
+                                                     <input name="firstName" id="firstNameUserDelete" readonly class="form-control pt-o mt-0" type="text" style="height: 1.5em">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0">Last name</b></div>
+                                                     <input name="lastName" id="lastNameUserDelete" readonly class="form-control" type="text" style="height: 1.5em">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0">Age</b></div>
+                                                     <input name="age" id="ageUserDelete" readonly type="number" class="form-control" style="height: 1.5em">
+                                                     <div class=" text-center"><b class="mb-0 pb-0">Email</b></div>
+                                                     <input name="email" type="email" id="emailUserDelete" readonly class="form-control" aria-describedby="emailHelp" style="height: 1.5em">
+                                                     <div class="mt-2 text-center"><b class="mb-0 pb-0" >Password</b></div>
+                                                     <input name="password" type="password" id="passwordUserDelete" readonly class="form-control" style="height: 1.5em">
+                                                     <div class=" text-center"><b class="mb-0 pb-0">Role</b></div>
+                                                     <select id="roleDeleteUser" multiple class="form-control" style="height: 2.5em">
+                                                         <option  style="font-size: 12px" >ADMIN</option>
+                                                     </select>
+                                                 </div>
+                                                 <div class="text-right">
+                                                     <button class="btn btn-secondary mt-4" data-dismiss="modal" id="closeDelete">Close</button>
+                                                     <input type="submit" class="btn btn-danger mt-4" value="Delete">
+                                                 </div>
+                                             </form>
+                                         </div>
+
+                                     </div>
+                                 </div>
+                             </div>
+                             <!--End modal for delete user-->
+
+                  </div>
+              </div>
+              <!--Конец таблицы отображения юзезов-->
+              <!--Вкладка добавления юзера-->
+              <div role="tabpanel" class="tab-pane" id="newUser">
+                  <div class="row border ml-1">
+                      <h5 class="p-2 pl-3">Add new user</h5>
+                  </div>
+                  <div class=" bg-white border ml-1">
+                      <!--Форма добавления-->
+                      <form  id="formForAddUser" style="font-size: 15px" action="/admin/add" method="post">
+                      <div class="container col-lg-4">
+                      <div class="mt-2 text-center"><b class="mb-0 pb-0">First name</b></div>
+                          <input  id="firstNameAdd" name="firstName" class="form-control pt-o mt-0" type="text" style="height: 1.5em">
+                      <div class="mt-2 text-center"><b class="mb-0 pb-0">Last name</b></div>
+                          <input id="lastNameAdd" name="lastName"  class="form-control" type="text" style="height: 1.5em">
+                      <div class="mt-2 text-center"><b class="mb-0 pb-0">Age</b></div>
+                          <input id="ageAdd" name="age"  type="number" class="form-control" style="height: 1.5em">
+                      <div class=" text-center"><b class="mb-0 pb-0">Email</b></div>
+                          <input id="emailAdd" name="email" type="email" class="form-control" aria-describedby="emailHelp" style="height: 1.5em">
+                      <div class="mt-2 text-center"><b class="mb-0 pb-0">Password</b></div>
+                          <input id="passwordAdd" name="password" type="password" class="form-control" style="height: 1.5em">
+                      <div class=" text-center"><b class="mb-0 pb-0">Role</b></div>
+                          <select multiple id="rolesAdd" name="role" class="form-control" style="height: 2.5em">
+                          </select>
+                          <div class="text-center"><input type="submit" value="Add new User" class="btn btn-success mt-3" style="font-size: 12px"></div>
+                      </div>
+                      </form>
+                  </div>
+              </div>
+              <!--Конец вкладки добавления юзера-->
+          </div>
+          <!--Конец тела отображения таблицы юзеров и добавления в таблицу-->
+         </div>
+          <!--Конец админовской вкладки-->
+              <div role="tabpanel" class="tab-pane" id="user">
+                  <h2>User information-page</h2>
+                  <div class="row border ml-1">
+                      <h5 class="p-2 pl-3">About user</h5>
+                  </div>
+                  <div class="row bg-white border ml-1">
+                      <table class="table table-striped m-3">
+                          <thead>
+                          <tr>
+                              <th scope="col">Id</th>
+                              <th scope="col">First Name</th>
+                              <th scope="col">Last Name</th>
+                              <th scope="col">Age</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Role</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr id="rowIntoTable">
+                              <th scope="row">1</th>
+                              <td>Mark</td>
+                              <td>Otto</td>
+                              <td>@mdo</td>
+                              <td>Otto</td>
+                              <td>@mdo</td>
+
+                          </tr>
+
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+      </div>
+        <!--Конец контейнера основной таблицы-->
+    </div>
+    </div>
+
+</div>
+
+<script>
+    //Скрипт подгружающий данные об авторизованном пользователе
+    $().ready(function(){
+        $.
+        getJSON("/getUser", function(data) {
+            console.log(data);
+            var head = "<b>" + data.email + " </b>with roles: <b>";
+            var roles = '';
+            let role = data.roles;
+            for(var i = 0; i < role.length; i++) {
+                roles += role[i].name;
+                roles += " ";
+            }
+            head = head + roles + "</b>";
+            $("#headPage").html(head);
+
+            var rowTable = '<th scope="row">' + data.id + "</th> <td>"
+                + data.firstName + "</td> <td>" + data.lastName + "</td> <td>" + data.age +
+                "</td> <td>" + data.email + "</td> <td>" + roles + "</td>"
+
+            $("#rowIntoTable").html(rowTable);
+        });
+    });
+</script>
+<script>
+    $().ready(function() {
+        //Функция подгружающая список всех возможных ролей
+        function getRoles() {$.getJSON("/admin/getListRoles", function(data) {
+            $("#rolesAdd").empty(str);
+            $("#rolesEdit").empty(str);
+            for (var i = 0; i < data.length; i++) {
+                var str = '<option style="font-size: 12px">' + data[i].name + '</option>';
+                $("#rolesAdd").append(str);
+                $("#rolesEdit").append(str);
+            }
+        });
+        }
+        //функция подгружающая список всех пользователей
+        function getUsersTable() {$.getJSON("/admin/getListUsers", function(data) {
+            for(var i = 0; i < data.length; i++) {
+                var roles = '';
+                let role = data[i].roles;
+                for(var j = 0; j < role.length; j++) {
+                    roles += role[j].name;
+                    roles += " ";
+                }
+                var rowTable = "<tr>";
+                    rowTable += '<th scope="col">' + data[i].id + '</th>';
+                    rowTable += '<td scope="col">' + data[i].firstName + '</td>';
+                    rowTable += '<td scope="col">' + data[i].lastName + '</td>';
+                    rowTable += '<td scope="col">' + data[i].age + '</td>';
+                    rowTable += '<td scope="col">' + data[i].email + '</td>';
+                    rowTable += '<td scope="col">' + roles + '</td>';
+                    rowTable += '<td><button  value="' + i + '" type="button" class="btn btn-primary">Edit</button></td>\n' +
+                        '<td><button type="button"  value="' + i + '" class="btn btn-danger">Delete</button></td>';
+                    $("#rowInTable").append(rowTable);
+
+            }
+
+
+            $("#rowInTable .btn-primary").click(function(){
+               var id = this.getAttribute("value");
+               console.log(id);
+               $("#idUserEdit").attr("value", data[id].id);
+               $("#firstNameUserEdit").attr("value", data[id].firstName);
+               $("#lastNameUserEdit").attr("value", data[id].lastName);
+               $("#ageUserEdit").attr("value", data[id].age);
+               $("#emailUserEdit").attr("value", data[id].email);
+               getRoles();
+               $("#editModal").modal("show");
+            });
+
+            $("#rowInTable .btn-danger").click(function(){
+               var id = this.getAttribute("value");
+               $("#firstNameUserDelete").attr("value", data[id].firstName);
+               $("#lastNameUserDelete").attr("value", data[id].lastName);
+               $("#ageUserDelete").attr("value", data[id].age);
+               $("#passwordUserDelete").attr("value", data[id].password);
+               $("#emailUserDelete").attr("value", data[id].email);
+               let role = data[id].roles;
+               $("#roleDeleteUser").empty();
+               for( var i = 0; i < role.length; i++) {
+                   var str = '<option style="font-size: 12px">' + role[i].name + '</option>';
+                   $("#roleDeleteUser").append(str);
+               }
+               $("#deleteModal").modal("show");
+
+            });
+        });}
+        //выгружаем пользователей
+        getUsersTable();
+        //смена активной кнопки на вкладке добавления нового пользователя
+        $("#linkNewUser").click(function() {
+            $("#formForAddUser").trigger('reset');
+            $(this).addClass("active");
+            $("#linkUsersTable").removeClass("active");
+            $("#newUser").toggle();
+            $("#usersTable").toggle();
+            getRoles();
+        });
+        //смена активной кнопки на вкладке просмотра таблицы пользователей
+        $("#linkUsersTable").click(function() {
+            $(this).addClass("active");
+            $("#linkNewUser").removeClass("active");
+            $("#newUser").toggle();
+            $("#usersTable").toggle();
+        });
+         //отправка данных о новом пользователе со сменой вкладки
+        $("#formForAddUser").submit(function(event){
+           event.preventDefault();
+           let roleArr = [];
+           var roles = $("#rolesAdd").val();
+           for(var i = 0; i < roles.length; i++) {
+               roleArr[i] = {name: roles[i]};
+           }
+           var model = {
+               firstName: $("#firstNameAdd").val(),
+               lastName: $("#lastNameAdd").val(),
+               age: $("#ageAdd").val(),
+               email: $("#emailAdd").val(),
+               password: $("#passwordAdd").val(),
+               roles: roleArr
+           }
+          $.ajax({
+              type: $(this).attr("method"),
+              url: $(this).attr("action"),
+              headers: {
+                  "Content-Type": "application/json",
+                  "Accept":"application/json"
+              },
+              data: JSON.stringify(model)
+          }).done(function () {
+             $("#rowInTable").empty();
+             getUsersTable();
+             $("#newUser").toggle();
+             $("#usersTable").toggle();
+             $("#linkUsersTable").addClass("active");
+              $("#linkNewUser").removeClass("active");
+              $(this).trigger('reset');
+          });
+       });
+
+        $("#formForEditUser").submit(function(event){
+            event.preventDefault();
+            let roleArr = [];
+            var roles = $("#rolesEdit").val();
+            for(var i = 0; i < roles.length; i++) {
+                roleArr[i] = {name: roles[i]};
+            }
+            var model = {
+                id: $("#idUserEdit").val(),
+                firstName: $("#firstNameUserEdit").val(),
+                lastName: $("#lastNameUserEdit").val(),
+                age: $("#ageUserEdit").val(),
+                email: $("#emailUserEdit").val(),
+                roles: roleArr
+            }
+            $.ajax({
+                type: $(this).attr("method"),
+                url: $(this).attr("action"),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept":"application/json"
+                },
+                data: JSON.stringify(model)
+            }).done(function () {
+                $("#rowInTable").empty();
+                getUsersTable();
+                $("#closeEdit").trigger('click');
+            });
+        });
+
+        $("#formForDeleteUser").submit(function(event){
+            event.preventDefault();
+            $.ajax({
+                type: $(this).attr("method"),
+                url: $(this).attr("action"),
+                data: $("#emailUserDelete").serialize()
+            }).done(function () {
+                $("#rowInTable").empty();
+                getUsersTable();
+                $("#closeDelete").trigger('click');
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>UserPage</title>
+
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+<body class="bg-light">
+<div class="container-fluid">
+    <!-- Это начало верхней строки-->
+    <div class="row  navbar-header bg-dark text-white">
+        <div class="col-lg-11 navbar-brand" id="headPage">
+            admin@mail.ru</b> with roles:
+        </div>
+        <div class="col-lg">
+            <div class="navbar-brand">
+                <a href="/logout"><small>Logout</small></a>
+            </div>
+        </div>
+    </div>
+    <!-- Это конец верхней строки и начало тела сайта-->
+    <div class="row">
+        <!--Это боковая панель меню сайта-->
+        <div class="col-lg-2 bg-white">
+            <ul class="row nav flex-column nav-pills pt-3" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#user" role="tab" data-toggle="tab">User</a></li>
+            </ul>
+        </div>
+        <!--Конец боковой пали сайта-->
+        <!--Контейнер основной страницы-->
+        <div class="col-lg-10 pt-3 pl-4">
+                    <h2>User information-page</h2>
+                    <div class="row border ml-1">
+                        <h5 class="p-2 pl-3">About user</h5>
+                    </div>
+                    <div class="row bg-white border ml-1">
+                        <table class="table table-striped m-3">
+                            <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                           <tr id="rowIntoTable">
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--Конец контейнера основной таблицы-->
+</div>
+
+<script>
+    $().ready(function(){
+        $.
+    getJSON("/getUser", function(data) {
+            var head = "<b>" + data.email + " </b>with roles: <b>";
+            var roles = '';
+            let role = data.roles;
+            for(var i = 0; i < role.length; i++) {
+                roles += role[i].name;
+                roles += " ";
+            }
+            head = head + roles + "</b>";
+            $("#headPage").html(head);
+
+            var rowTable = '<th scope="row">' + data.id + "</th> <td>"
+                + data.firstName + "</td> <td>" + data.lastName + "</td> <td>" + data.age +
+                "</td> <td>" + data.email + "</td> <td>" + roles + "</td>"
+
+            $("#rowIntoTable").html(rowTable);
+        });
+    });
+</script>
+</body>
+</html>
